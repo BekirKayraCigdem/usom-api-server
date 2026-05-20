@@ -1,29 +1,33 @@
-# USOM Threat Intelligence Fetcher & Nginx Feeder
+# 🛡️ USOM API Server (Threat Intelligence Fetcher & Nginx Feeder)
 
-Bu proje, USOM (Ulusal Siber Olaylara Müdahale Merkezi) API'sinden güncel zararlı bağlantı (Domain/IP) listelerini otomatik olarak çeken, temizleyen ve kurumsal güvenlik duvarları (FortiGate, Palo Alto vb.) için "External Threat Feed" formatında Nginx üzerinden sunan bir otomasyon aracıdır.
+## 📖 Proje Hakkında
+Bu proje, USOM (Ulusal Siber Olaylara Müdahale Merkezi) API'sinden güncel zararlı bağlantı (Domain/IP) listelerini otomatik olarak çeker. Gelen veriyi akıllı bir şekilde temizleyerek kurumsal ağ güvenlik cihazlarının okuyabileceği "External Threat Feed" (Dış Tehdit Beslemesi) formatına dönüştürür ve Nginx üzerinden canlı olarak yayınlar.
 
-## 🚀 Mimari Özellikler
+## ✨ Öne Çıkan Özellikler
+* **Sınırsız Dinamik Sayfalama (Pagination):** USOM veritabanındaki tüm verileri sınır tanımadan, otomatik olarak tarar ve çeker.
+* **Akıllı Veri Temizleme (IOC Cleaner):** `http://zararli.com/virus.exe` gibi karmaşık bağlantıları ayrıştırır, klasör ve dosya yollarını atarak firewall cihazlarının anlayabileceği saf Domain veya IP adresini ayıklar.
+* **Tekrarsızlaştırma Sistemi:** Çift kayıtları (duplicate) `set()` veri mimarisi ile engeller. Böylece güvenlik donanımlarının aynı veriyi defalarca işleyerek yorulmasının önüne geçilir.
+* **Savunmacı Programlama (Defensive Design):** API limitlerine (Rate Limiting) takılmamak için akıllı bekleme süreleri içerir. Veri çekilemediği nadir durumlarda mevcut dosyayı koruma altına alır, ağın boş liste çekmesini önler.
+* **7/24 Servis Mimarisi:** Linux `systemd` ile entegre çalışarak sistemin arka planında daemon olarak kesintisiz hizmet verir.
+* **Yüksek Performanslı Dağıtım:** Oluşturulan tehdit listesi, Nginx web sunucusu üzerinden çok düşük gecikmeyle `.txt` formatında sunulur.
 
-*   **Sınırsız Dinamik Sayfalama (Pagination):** USOM veritabanındaki tüm sayfaları otomatik tarar. Sınır yoktur.
-*   **Akıllı Veri Temizleme (IOC Cleaner):** Gelen karmaşık URL'leri (`http://zararli.com/virus.exe`) analiz eder, klasör yollarını silerek sadece saf Domain veya IP adresini ayıklar.
-*   **Tekrarsızlaştırma:** Aynı domainin yüzlerce kez güvenlik duvarına gönderilip donanımın yorulmasını engeller (`set()` mantığı).
-*   **Savunmacı Programlama (Defensive Design):** API banlarına (Rate Limiting) karşı bekleme süreleri ayarlanmıştır. Veri gelmezse mevcut dosyayı koruma altına alır, sistemi çökertmez.
-*   **Sistem Entegrasyonu:** Linux `systemd` servisi olarak arka planda 7/24 kesintisiz çalışır.
+---
 
-## 🛠️ Kurulum ve Kullanım
+## 🛠️ Sistem Gereksinimleri
+* **İşletim Sistemi:** Ubuntu / Debian tabanlı Linux Dağıtımı
+* **Paketler:** `python3`, `python3-requests`, `nginx`, `git`
 
-### 1. Gereksinimler
-* Ubuntu/Debian tabanlı bir Linux sunucu
-* Python 3 ve `requests` kütüphanesi
-* Nginx Web Sunucusu
+---
 
-### 2. Dosya Yapısı
-Projeyi `/opt/usom_entegrasyonu/` dizinine klonlayın.
-Çıktı dosyası `/var/www/html/usom.txt` konumunda oluşacak ve Nginx üzerinden `http://SUNUCU_IP/usom.txt` adresinden yayınlanacaktır.
+## 🚀 Kurulum Rehberi (Sıfırdan Başlangıç)
 
-### 3. Servis Kurulumu
-`usom-fetcher.service` dosyasını `/etc/systemd/system/` dizinine kopyalayın ve servisi başlatın:
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable usom-fetcher.service
-sudo systemctl start usom-fetcher.service
+Projeyi sisteminize kurmak için **Otomatik Kurulum** (Önerilen) veya **Manuel Kurulum** adımlarından birini tercih edebilirsiniz.
+
+### Yöntem 1: Otomatik Kurulum (Önerilen)
+Repo içerisinde bulunan `github_push.sh` dosyası, sistem gereksinimlerini kurmak ve servisleri aktif etmek üzere otomatikleştirilmiştir.
+
+1. Terminali açın ve sunucunuza bağlanın.
+2. Repoyu sunucunuza klonlayın ve klasöre girin:
+   ```bash
+   git clone [https://github.com/BekirKayraCigdem/usom-api-server.git](https://github.com/BekirKayraCigdem/usom-api-server.git)
+   cd usom-api-server
