@@ -25,7 +25,7 @@ Bu proje, USOM (Ulusal Siber Olaylara Müdahale Merkezi) API'sinden güncel zara
 Repo içerisinde bulunan `github_push.sh` dosyası, sistem gereksinimlerini kurmak ve servisleri aktif etmek üzere otomatikleştirilmiştir.
 
 1. Terminali açın ve sunucunuza bağlanın.
-2. Repoyu sunucunuza klonlayın ve klasöre girin:
+2. Aşağıda bulunan komutları sırasıyla uygulayın.
    ```bash
    cd /opt
    sudo git clone https://github.com/BekirKayraCigdem/usom-api-server.git
