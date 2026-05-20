@@ -27,5 +27,9 @@ Repo içerisinde bulunan `github_push.sh` dosyası, sistem gereksinimlerini kurm
 1. Terminali açın ve sunucunuza bağlanın.
 2. Repoyu sunucunuza klonlayın ve klasöre girin:
    ```bash
-   git clone [https://github.com/BekirKayraCigdem/usom-api-server.git](https://github.com/BekirKayraCigdem/usom-api-server.git)
+   cd /opt
+   sudo git clone https://github.com/BekirKayraCigdem/usom-api-server.git
    cd usom-api-server
+   sudo chmod +x github_push.sh
+   sudo ./github_push.sh
+   
