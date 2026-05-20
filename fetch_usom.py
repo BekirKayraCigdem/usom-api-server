@@ -6,7 +6,6 @@ import logging
 import sys
 import time
 
-# 1. LOGLAMA AYARLARI
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 OUTPUT_FILE = "/var/www/html/usom.txt"
 
@@ -24,12 +23,11 @@ def clean_ioc(address):
 def fetch_and_save_usom_data():
     ioc_list = [] 
     total_records_checked = 0
-    page = 1 # Taramaya baslayacagimiz ilk sayfa
+    page = 1
     
     try:
         logging.info("USOM SINIRSIZ Derin Taramasi Basliyor (Tum veritabani cekilecek)...")
         
-        # 2. SINIRSIZ DÖNGÜ (Dinamik Sayfalama)
         while True:
             api_url = f"https://www.usom.gov.tr/api/address/index?page={page}"
             
@@ -37,7 +35,6 @@ def fetch_and_save_usom_data():
             response.raise_for_status() 
             data = response.json()
             
-            # Eger 'models' icinde veri varsa taramaya devam et
             if "models" in data and len(data["models"]) > 0:
                 all_items = data["models"]
                 total_records_checked += len(all_items)
@@ -49,27 +46,22 @@ def fetch_and_save_usom_data():
                         if valid:
                             ioc_list.append(clean_data)
                 
-                # Sadece her 50 sayfada bir log atalim ki ekranimiz log coplugune donmesin
                 if page % 50 == 0:
                     logging.info(f"... Su ana kadar {page} sayfa ve {total_records_checked} kayit tarandi ...")
                 
-                # Bir sonraki sayfaya gecmek icin sayaci 1 artir
                 page += 1
                 
-                # SAVUNMACI YAKLASIM: USOM IP'mizi banlamasin diye sayfalar arasi 1 saniye bekle
                 time.sleep(1)
                 
-            # Eger 'models' bossa, USOM'un sonuna gelmisiz demektir.
             else:
                 logging.info(f"Veritabani sonuna ulasildi! Toplam {page-1} sayfa tamamen tarandi.")
-                break # Donguyu kir ve bitir.
+                break 
 
     except requests.exceptions.RequestException as e:
         logging.error(f"USOM API Erisim Hatasi (Ban riski veya baglanti koptu): {e}")
     except Exception as e:
         logging.error(f"Beklenmeyen hata: {e}")
 
-    # 3. DOSYAYA YAZMA VE TEKRARLARI SİLME
     if len(ioc_list) > 0:
         unique_iocs = list(set(ioc_list)) 
         with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
@@ -84,6 +76,5 @@ if __name__ == "__main__":
     while True:
         fetch_and_save_usom_data()
         
-        # Tüm veritabanını çektiğimiz için sistemi ve USOM'u yormamak adına yeni tarama için 1 SAAT bekliyoruz.
         logging.info("Yeni Sinirsiz Tarama icin 1 SAAT (3600 saniye) bekleniyor...")
         time.sleep(3600)
