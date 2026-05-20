@@ -1,21 +1,13 @@
 [Unit]
-# Servisimizin kısa açıklaması
 Description=USOM IP Cekici Servisi
-# Bu servis, sunucunun internet bağlantısı (network) aktif olduktan SONRA başlasın (Savunmacı yaklaşım)
 After=network.target
 
 [Service]
-# Basit bir arka plan servisi olduğunu belirtiyoruz
 Type=simple
-# İzin sorunları yaşamamak için root (yönetici) haklarıyla çalıştırıyoruz
 User=root
-# Servis başladığında çalıştırılacak tam komut
 ExecStart=/usr/bin/python3 /opt/usom_entegrasyonu/fetch_usom.py
-# EĞER kodumuz beklenmedik bir hata yüzünden çökerse, Linux onu otomatik olarak yeniden başlatsın
 Restart=on-failure
-# Yeniden başlatmadan önce 5 saniye beklesin ki sistemi yormasın
 RestartSec=5
 
 [Install]
-# Servisin standart çoklu kullanıcı modunda çalışmasını sağlar
 WantedBy=multi-user.target
