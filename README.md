@@ -19,11 +19,9 @@ Bu proje, USOM (Ulusal Siber Olaylara Müdahale Merkezi) API'sinden güncel zara
 
 ---
 
-## 🚀 Kurulum Rehberi (Sıfırdan Başlangıç)
+## 🚀 Kurulum Rehberi
 
-Projeyi sisteminize kurmak için **Otomatik Kurulum** (Önerilen) veya **Manuel Kurulum** adımlarından birini tercih edebilirsiniz.
-
-### Yöntem 1: Otomatik Kurulum (Önerilen)
+### Otomatik Kurulum 
 Repo içerisinde bulunan `github_push.sh` dosyası, sistem gereksinimlerini kurmak ve servisleri aktif etmek üzere otomatikleştirilmiştir.
 
 1. Terminali açın ve sunucunuza bağlanın.
