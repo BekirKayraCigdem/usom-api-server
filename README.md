@@ -30,6 +30,5 @@ Repo içerisinde bulunan `github_push.sh` dosyası, sistem gereksinimlerini kurm
    cd /opt
    sudo git clone https://github.com/BekirKayraCigdem/usom-api-server.git
    cd usom-api-server
-   sudo chmod +x github_push.sh
-   sudo ./github_push.sh
-   
+   sudo chmod +x install.sh
+   sudo ./install.sh
